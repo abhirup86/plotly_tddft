@@ -81,12 +81,11 @@ wm, X = np.linalg.eig(M)
 wp, X = np.linalg.eig(P)
 
 w_check = [
-    0.3547782530, 0.4153174946, 0.5001011401, 0.5513718846, 0.6502707118,
-    0.8734253708, 1.2832053178, 1.3237421886, 20.0109471551, 20.0504919449
+    0.3547782530, 0.4153174946, 0.5001011401, 0.5513718846, 0.6502707118, 0.8734253708, 1.2832053178, 1.3237421886,
+    20.0109471551, 20.0504919449
 ]
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "(A-B)(A+B)", "Project 12",
-                                             "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "(A-B)(A+B)", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_NH2):
     if abs(wi - w_check[i]) < 1.0e-8:
@@ -95,8 +94,7 @@ for i, wi in enumerate(w_NH2):
         m = "X NO X"
     print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, w_check[i], m))
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "(A-B)^1/2(A+B)(A-B)^1/2",
-                                             "Project 12", "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "(A-B)^1/2(A+B)(A-B)^1/2", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_H2):
     if abs(wi - w_check[i]) < 1.0e-8:
@@ -105,8 +103,7 @@ for i, wi in enumerate(w_H2):
         m = "X NO X"
     print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, w_check[i], m))
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "eigval (A+B)",
-                                             "eigval (A-B)", "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "eigval (A+B)", "eigval (A-B)", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(wm):
     m = "N/A"
