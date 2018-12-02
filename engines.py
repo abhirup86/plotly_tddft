@@ -22,12 +22,7 @@ except ImportError:
 
 
 class TDSCF_JK_Engine(object):
-    def __init__(self,
-                 wfn,
-                 blocks=False,
-                 precondition='denom',
-                 tda=False,
-                 triplet=False):
+    def __init__(self, wfn, blocks=False, precondition='denom', tda=False, triplet=False):
         blocks = False
         if not wfn.same_a_b_orbs():
             raise ValidationError("TDSCF is RHF only")
@@ -39,18 +34,13 @@ class TDSCF_JK_Engine(object):
         self.noccpi = wfn.nalphapi()
         self.nmopi = wfn.nmopi()
         self.nirrep = wfn.nirrep()
-        self.nvirpi = core.Dimension([
-            mo - occ
-            for mo, occ in zip(self.noccpi.to_tuple(), self.nmopi.to_tuple())
-        ])
+        self.nvirpi = core.Dimension([mo - occ for mo, occ in zip(self.noccpi.to_tuple(), self.nmopi.to_tuple())])
         self.nocc = wfn.nalphapi().sum()
         self.nmo = wfn.nmopi().sum()
         self.nvir = self.nmo - self.nocc
         self.nov = self.nocc * self.nvir
-        self.Fab = core.Matrix.triplet(self.Cv, self.wfn.Fa(), self.Cv, True,
-                                       False, False)
-        self.Fij = core.Matrix.triplet(self.Co, self.wfn.Fb(), self.Co, True,
-                                       False, False)
+        self.Fab = core.Matrix.triplet(self.Cv, self.wfn.Fa(), self.Cv, True, False, False)
+        self.Fij = core.Matrix.triplet(self.Co, self.wfn.Fb(), self.Co, True, False, False)
         self.e_ia = np.zeros((self.nocc, self.nvir))
         for i in range(self.nocc):
             for a in range(self.nvir):
@@ -97,8 +87,7 @@ class TDSCF_JK_Engine(object):
            A trial vector (occ x vir)
         """
         triplet = False
-        ret = self.wfn.Ax_JK_products(
-            [core.Matrix.from_array(X.reshape(self.nocc, self.nvir))], triplet)
+        ret = self.wfn.Ax_JK_products([core.Matrix.from_array(X.reshape(self.nocc, self.nvir))], triplet)
         Fx = X * self.e_ia.ravel()
 
         return ret[0].to_array().ravel() + Fx.ravel()
@@ -153,11 +142,9 @@ class TDSCF_JK_Engine(object):
         return ret
 
     def davidson_RPA_func(self, X):
-        ret = self.RPA_product_single(
-            [core.Matrix.from_array(X.reshape(self.nocc, self.nvir))])[0]
+        ret = self.RPA_product_single([core.Matrix.from_array(X.reshape(self.nocc, self.nvir))])[0]
         return ret.to_array().flatten()
 
     def symp_RPA_func(self, X):
-        ret = self.RPA_product_pair(
-            [core.Matrix.from_array(X.reshape(self.nocc, self.nvir))])[0]
+        ret = self.RPA_product_pair([core.Matrix.from_array(X.reshape(self.nocc, self.nvir))])[0]
         return (ret[0].to_array().flatten(), ret[1].to_array().flatten())
