@@ -40,10 +40,8 @@ def do_direct_diag(wfn):
     mCa_occ = wfn.Ca_subset("AO", "OCC")
     mCa_vir = wfn.Ca_subset("AO", "VIR")
     mFa = wfn.Fa()
-    F_ij = psi4.core.Matrix.triplet(mCa_occ, mFa, mCa_occ, True, False,
-                                    False).to_array()
-    F_ab = psi4.core.Matrix.triplet(mCa_vir, mFa, mCa_vir, True, False,
-                                    False).to_array()
+    F_ij = psi4.core.Matrix.triplet(mCa_occ, mFa, mCa_occ, True, False, False).to_array()
+    F_ab = psi4.core.Matrix.triplet(mCa_vir, mFa, mCa_vir, True, False, False).to_array()
     Iiajb = mints.mo_eri(mCa_occ, mCa_vir, mCa_occ, mCa_vir).to_array()
     Iabji = mints.mo_eri(mCa_vir, mCa_vir, mCa_occ, mCa_occ).to_array()
     A = np.einsum("ab,ij->iajb", F_ab, np.eye(nocc))
@@ -74,10 +72,8 @@ def do_direct_diag(wfn):
 
 
 def check_same(aval, a_label, b_val, b_label):
-    print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", a_label, b_label,
-                                                 "Match?"))
-    print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-", "-",
-                                                     "-"))
+    print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", a_label, b_label, "Match?"))
+    print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-", "-", "-"))
     all_same = True
     for i in range(len(aval)):
         av = aval[i]
