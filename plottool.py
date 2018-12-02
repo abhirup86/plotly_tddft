@@ -59,10 +59,7 @@ def collect_data(final_vals, Nov, Nroot, iters, solver_name, system_label):
 
 
 def make_conv_plot(df, threshold, col_name='res_norm'):
-    sys_2_color = {
-        s: cl.scales['6']['qual']['Dark2'][i]
-        for i, s in enumerate(df.system.unique())
-    }
+    sys_2_color = {s: cl.scales['6']['qual']['Dark2'][i] for i, s in enumerate(df.system.unique())}
     solver_2_line = {'Davidson': 'dot', 'Symplectic': 'solid'}
     traces = []
     xmax = df.niter.max()
@@ -79,14 +76,6 @@ def make_conv_plot(df, threshold, col_name='res_norm'):
     layout = go.Layout(
         yaxis=dict(type='log', exponentformat='e'),
         xaxis=dict(gridwidth=10),
-        shapes=[
-            dict(
-                type='line',
-                x0=0,
-                x1=xmax,
-                y0=threshold,
-                y1=threshold,
-                line=dict(width=4.0, color='red'))
-        ])
+        shapes=[dict(type='line', x0=0, x1=xmax, y0=threshold, y1=threshold, line=dict(width=4.0, color='red'))])
 
     return go.Figure(data=traces, layout=layout)
