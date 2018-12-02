@@ -107,8 +107,7 @@ def davidson_solver(ax_function,
             if abs(w_i) > 1.0e-10:
                 print("*** WARNING***")
                 print("    Root {:>5}: |Imag[A_w]| > 1.0E-10!".format(i))
-                print("              : |Imag[A_v[{}]]| = {:.2E}".format(
-                    i, np.linalg.norm(A_v_imag[:, i])))
+                print("              : |Imag[A_v[{}]]| = {:.2E}".format(i, np.linalg.norm(A_v_imag[:, i])))
 
         # here, check if no residuals > max no residuals, if so, collapse subspace
         if nl >= max_ss_size:
@@ -136,8 +135,7 @@ def davidson_solver(ax_function,
             precon_resid = preconditioner(residual, i, A_w[i])
             de = abs(A_w_old[i] - A_w[i])
             istat['de'][i] = de
-            print("    ROOT {:<3} de = {:<10.6f} |r| = {:<10.6f}".format(
-                i, de, norm[i]))
+            print("    ROOT {:<3} de = {:<10.6f} |r| = {:<10.6f}".format(i, de, norm[i]))
             conv_roots[i] = (de < e_conv) and (norm[i] < r_conv)
             if conv_roots[i]:
                 force_collapse = True
@@ -168,10 +166,8 @@ def davidson_solver(ax_function,
                 B = np.dot(B, A_v)
             n_left_to_converge = np.count_nonzero(np.logical_not(conv_roots))
             n_converged = np.count_nonzero(conv_roots)
-            max_ss_size = n_converged + (
-                n_left_to_converge * max_vecs_per_root)
-            B = np.column_stack(
-                tuple(B[:, i] for i in range(B.shape[-1])) + tuple(new_Bs))
+            max_ss_size = n_converged + (n_left_to_converge * max_vecs_per_root)
+            B = np.column_stack(tuple(B[:, i] for i in range(B.shape[-1])) + tuple(new_Bs))
         count += 1
 
     if not converged:
@@ -260,27 +256,19 @@ def symp_solver(pm_function,
             rwidth=rwidth, vwidth=vwidth)
         root_info_fmt = "     ROOT {{n:<5}} | {{w: {val_fmt}}} | {{dw: {val_fmt}}} | {{normR: {res_fmt}}} | {{normL: {res_fmt}}} |".format(
             val_fmt=val_fmt, res_fmt=res_fmt)
-        print("Iteration: {:<5}       subspace dimension: {:<5}".format(
-            info['count'], info['nl']))
+        print("Iteration: {:<5}       subspace dimension: {:<5}".format(info['count'], info['nl']))
         print(root_info_title.format(" ", "E (au)", "dE (au)", "|WR|", "|WL|"))
         print(root_info_title.format(" ", "------", "-------", "----", "----"))
         for i in range(nk):
             if info['conv'][i]:
                 print(
                     root_info_fmt.format(
-                        n=i,
-                        w=info['w'][i],
-                        dw=info['dw'][i],
-                        normR=info['|WR|'][i],
-                        normL=info['|WL|'][i]) + "  CONVERGED!")
+                        n=i, w=info['w'][i], dw=info['dw'][i], normR=info['|WR|'][i], normL=info['|WL|'][i]) +
+                    "  CONVERGED!")
             else:
                 print(
                     root_info_fmt.format(
-                        n=i,
-                        w=info['w'][i],
-                        dw=info['dw'][i],
-                        normR=info['|WR|'][i],
-                        normL=info['|WL|'][i]))
+                        n=i, w=info['w'][i], dw=info['dw'][i], normR=info['|WR|'][i], normL=info['|WL|'][i]))
 
     while iter_info['count'] < maxiter:
         print("Sympsolve iter {}".format(iter_info['count']))
@@ -327,10 +315,8 @@ def symp_solver(pm_function,
         Lss = np.dot(Pss, Rss)
         Lss = np.einsum('ij,j->ij', Lss, np.divide(1.0, w))
 
-        WL = np.einsum("Ni,ik->Nk", Pb, Rss) - np.einsum(
-            "Ni,ik,k->Nk", B, Lss, w)
-        WR = np.einsum("Ni,ik->Nk", Mb, Lss) - np.einsum(
-            "Ni,ik,k->Nk", B, Rss, w)
+        WL = np.einsum("Ni,ik->Nk", Pb, Rss) - np.einsum("Ni,ik,k->Nk", B, Lss, w)
+        WR = np.einsum("Ni,ik->Nk", Mb, Lss) - np.einsum("Ni,ik,k->Nk", B, Rss, w)
         new_space = []
         istat['rnorm'] = np.zeros(nk)
         istat['de'] = np.zeros(nk)
