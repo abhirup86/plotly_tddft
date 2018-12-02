@@ -36,8 +36,7 @@ F_ab = Fmo[prod.v, prod.v]
 FockA = np.einsum("ab,ij->iajb", F_ab, np.eye(prod.nocc))
 FockA -= np.einsum("ij,ab->iajb", F_ij, np.eye(prod.nvir))
 fake_guess = np.eye(prod.nrot)
-Iuvlt = prod.mints.ao_eri(prod.mints.basisset(), prod.mints.basisset(),
-                          prod.mints.basisset(),
+Iuvlt = prod.mints.ao_eri(prod.mints.basisset(), prod.mints.basisset(), prod.mints.basisset(),
                           prod.mints.basisset()).to_array()
 jk_bldr = fake_jk(Iuvlt)
 A_jk = np.zeros((prod.nrot, prod.nrot))
@@ -71,10 +70,8 @@ for ia in range(prod.nrot):
 w, X = np.linalg.eigh(A_jk2)
 w_jk2 = w[w.argsort()]
 
-Viajb = np.einsum("uvlt,ui,va,lj,tb->iajb", Iuvlt, C[:, prod.o], C[:, prod.v],
-                  C[:, prod.o], C[:, prod.v])
-Vabij = np.einsum("uvlt,ua,vb,li,tj->abij", Iuvlt, C[:, prod.v], C[:, prod.v],
-                  C[:, prod.o], C[:, prod.o])
+Viajb = np.einsum("uvlt,ui,va,lj,tb->iajb", Iuvlt, C[:, prod.o], C[:, prod.v], C[:, prod.o], C[:, prod.v])
+Vabij = np.einsum("uvlt,ua,vb,li,tj->abij", Iuvlt, C[:, prod.v], C[:, prod.v], C[:, prod.o], C[:, prod.o])
 A_mo = 2 * Viajb - np.einsum("abij->iajb", Vabij)
 A_mo += FockA
 A_mo = A_mo.reshape((prod.nrot, prod.nrot))
@@ -124,8 +121,7 @@ w_check = [
     20.0505319444
 ]
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "Direct MO A", "Project 12",
-                                             "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "Direct MO A", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_mo):
     if abs(wi - w_check[i]) < 1.0e-8:
@@ -134,8 +130,7 @@ for i, wi in enumerate(w_mo):
         m = "X NO X"
     print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, w_check[i], m))
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "MyJK A(AO)", "Project 12",
-                                             "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "MyJK A(AO)", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_jk):
     if abs(wi - w_check[i]) < 1.0e-8:
@@ -144,8 +139,7 @@ for i, wi in enumerate(w_jk):
         m = "X NO X"
     print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, w_check[i], m))
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "Real_JK A(AO)",
-                                             "Project 12", "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "Real_JK A(AO)", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_jk2):
     if abs(wi - w_check[i]) < 1.0e-8:
