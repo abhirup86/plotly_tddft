@@ -32,10 +32,8 @@ F_ab = Fmo[prod.v, prod.v]
 print("F_ij: ", " x ".join(str(x) for x in F_ij.shape))
 print("")
 print("F_ab: ", " x ".join(str(x) for x in F_ab.shape))
-Iiajb = prod.mints.mo_eri(prod.mCa_occ, prod.mCa_virt, prod.mCa_occ,
-                          prod.mCa_virt).to_array()
-Iabji = prod.mints.mo_eri(prod.mCa_virt, prod.mCa_virt, prod.mCa_occ,
-                          prod.mCa_occ).to_array()
+Iiajb = prod.mints.mo_eri(prod.mCa_occ, prod.mCa_virt, prod.mCa_occ, prod.mCa_virt).to_array()
+Iabji = prod.mints.mo_eri(prod.mCa_virt, prod.mCa_virt, prod.mCa_occ, prod.mCa_occ).to_array()
 A = np.einsum("ab,ij->iajb", F_ab, np.eye(prod.nocc))
 A -= np.einsum("ij,ab->iajb", F_ij, np.eye(prod.nvir))
 A += 2 * Iiajb - np.einsum("abji->iajb", Iabji)
@@ -99,8 +97,7 @@ w_check = [
     #20.0113074586,
     20.0504919449
 ]
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "MeFULL", "Project 12",
-                                             "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "MeFULL", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_full):
     if abs(wi - w_check[i]) < 1.0e-8:
@@ -109,8 +106,7 @@ for i, wi in enumerate(w_full):
         m = "X NO X"
     print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, w_check[i], m))
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "MeRed", "Project 12",
-                                             "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "MeRed", "Project 12", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(w_red):
     if abs(wi - w_check[i]) < 1.0e-8:
@@ -119,10 +115,8 @@ for i, wi in enumerate(w_red):
         m = "X NO X"
     print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, w_check[i], m))
 
-print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "eigval (A-B)", "sqrt",
-                                             "Match?"))
+print("{:^5}  {:^20}  {:^20}  {:^10}".format("#", "eigval (A-B)", "sqrt", "Match?"))
 print("{:-^5}  {:-^20}  {:-^20}  {:-^10}".format("-", "-", '-', "-"))
 for i, wi in enumerate(wm):
     m = "N/A"
-    print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(
-        i, wi, np.sqrt(wi), m))
+    print("{:>5}  {:>20.12f}  {:>20.12f}  {:^10}".format(i, wi, np.sqrt(wi), m))
